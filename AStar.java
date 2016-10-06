@@ -10,8 +10,30 @@ public class AStar{
         Scanner sc = new Scanner(f);
         
         //create my map
-        Map<String, Node> map = new HashMap<>();
+        Map<String, Node> map =  generateMap(sc);
         
+        //System.out.println(map);
+        
+        //at this point the map is assembled we can start doing our
+        //stuff
+        
+        String start = getStart(map);
+
+        //at this point our map is setup and our start point is created WOO
+        ASTNode nul = null;
+        //create the root node
+        ASTNode root = new ASTNode(nul, nul, nul, map.get(start), 0.0);
+        AStarTree tree = new AStarTree(root, map);
+
+        System.out.println(tree.root.printChildren());
+        System.out.println(Arrays.toString(root.city.getEdges()));
+        
+        tree.run();
+    }
+    
+    
+    public static HashMap<String, Node> generateMap(Scanner sc){
+        HashMap<String, Node> map = new HashMap<>();
         //go through each line in the file
         while(sc.hasNextLine()){
             String name = sc.nextLine();
@@ -41,41 +63,39 @@ public class AStar{
                 edges[i] = new Edge(to, dis, rc, dan);
                 
             }
+
             Node nod = new Node(name, distance, edges);
             map.put(name, nod);
 
             sc.nextLine();
         }
-        //System.out.println(map);
-        
-        //at this point the map is assembled we can start doing our
-        //heuristical stuff
+        return map;
+    }
+    
+    public static String getStart(Map map){
+        String start = "";
         boolean s = true;
         Scanner ls = new Scanner(System.in);
-        String start = "";
         while(s){
             System.out.println("Please pick a city to start from:");
-            for(String name : map.keySet()){
-                System.out.println(name.replaceAll("_", " "));
+            for(Object name : map.keySet()){
+                String str = (String) name;
+                System.out.println(str.replaceAll("_", " "));
             }
             start = ls.nextLine();
             System.out.println(start);
             if(map.containsKey(start.replaceAll(" ", "_"))){
                 s = !s;
                 System.out.println("City: " + start);
+                start = start.replaceAll(" ", "_");
             } else {
                 System.out.println("INVALID CITY press enter");
                 ls.nextLine();
             } 
             
         }
-        
-        
-        //at this point our map is setup and our start point is created WOO
-        
-        
+        return start;
     }
-    
 }
 
 //this object will do all the work like normal
@@ -87,6 +107,24 @@ class AStarTree{
         this.map = m;
     }
     
+    //this run method implements 
+    public void run(){
+        String end = "Iron_Hills";
+        
+        //start with the root
+        ASTNode lowest = root;
+        
+        //since the root is the lowest node expand it
+        root.expand();
+        //first we have to evaluate each node in the tree and find the
+        //node with the lowest Hueristic value
+        while(true){
+            //find new lowest in the tree
+            if(lowers.expanded());
+            
+        }
+    }
+
 }
 
 //the nodes used in the AStarTree
@@ -144,11 +182,12 @@ class ASTNode{
             //node
             if(left != null){
                 left.rightSib = curr;
-                
+                left = curr;
             //if the left node is null then the curr node is the child this node
             //should point to for the children
             } else {
                 child = curr;
+                left = curr;
            }
         }
         //at this point we have taken each edge from the node and expaneded them 
@@ -156,16 +195,44 @@ class ASTNode{
         //it represents, and pointers to its siblings 
     }
     
-    public boolean expaneded(){
+    public double hueristic(){
+        return gcost + city.distance;
+    }
+    
+    public boolean expanded(){
         return child != null;
     }
     
+    //prints out the node and its children
+    public String toString(){
+        return city.name;
+    }
+    
+    public String printChildren(){
+        String result = "";
+        if(this.expanded()){
+            ASTNode curr = this.child;
+            result = curr.city.name;
+            while(curr.rightSib != null){
+                curr = curr.rightSib;
+                result += " " + curr.city.name;
+            }
+        }
+        return result;
+    }
 }
 
+//the node object keeps track of a few things about the city
+//1 it keeps track of the city name, the hueristical disance 
+//to the destination and the array of edges to other cities
 class Node{
+    
+    
     String name;
     int distance;
     Edge[] edges;
+    
+    
     public Node(String name, int distance, Edge[] e){
         this.name = name;
         this.distance = distance;
