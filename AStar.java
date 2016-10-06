@@ -17,23 +17,53 @@ public class AStar{
         //at this point the map is assembled we can start doing our
         //stuff
         
-        String start = getStart(map);
+        //String start = getStart(map);
 
         //at this point our map is setup and our start point is created WOO
-        ASTNode nul = null;
+        //ASTNode nul = null;
         //create the root node
-        ASTNode root = new ASTNode(nul, nul, nul, map.get(start), 0.0);
-        AStarTree tree = new AStarTree(root, map);
-
-        System.out.println(tree.root.printChildren());
-        System.out.println(Arrays.toString(root.city.getEdges()));
+        //ASTNode root = new ASTNode(nul, nul, nul, map.get(start), 0.0);
+        //AStarTree tree = new AStarTree(root, map);
+        ASTNode root = null;
+        //System.out.println(tree.root.printChildren());
+        //System.out.println(Arrays.toString(root.city.getEdges()));
+        //System.out.println(map.get("Carrock"));
+        //lets go through each node in the map make it into the tree and then
+        //attempt to expand it
         
-        tree.run();
+        //System.out.println(map.get((map.get("Wood_Elves").edges[2].to)));
+        System.out.println(map);
+        
+        /*
+        for(String name : map.keySet()){
+            System.out.println(name + " "  + map.get(name));
+            Edge[] e = map.get(name).edges;
+            for(int i = 0; i <e.length; i ++){
+                if(map.get(e[i].to) ==  null){
+                    System.out.print("|||");
+                    System.out.print("ERROR A NULL WAS FOUND");
+                    System.out.print(e[i]);
+                }
+                
+            }
+            System.out.println();
+            System.out.println();
+            System.out.println();
+        }
+        */
+        System.out.println(map.get("Carrock"));
+        System.out.println(map.get("Bree"));
+        System.out.println(map.get("North_Pass"));
+         for(String name : map.keySet()){
+            String r = name.replaceAll(" " , "");
+            System.out.println(name + " " + map.get(r));
+        }
+        //tree.run();
     }
     
     
-    public static HashMap<String, Node> generateMap(Scanner sc){
-        HashMap<String, Node> map = new HashMap<>();
+    public static TreeMap<String, Node> generateMap(Scanner sc){
+        TreeMap<String, Node> map = new TreeMap<>();
         //go through each line in the file
         while(sc.hasNextLine()){
             String name = sc.nextLine();
@@ -66,7 +96,7 @@ public class AStar{
 
             Node nod = new Node(name, distance, edges);
             map.put(name, nod);
-
+            System.out.println(name + " " + nod);
             sc.nextLine();
         }
         return map;
@@ -112,17 +142,75 @@ class AStarTree{
         String end = "Iron_Hills";
         
         //start with the root
-        ASTNode lowest = root;
-        
-        //since the root is the lowest node expand it
-        root.expand();
+        ASTNode lowest = null;
+        ASTNode current = root;
+
         //first we have to evaluate each node in the tree and find the
         //node with the lowest Hueristic value
         while(true){
-            //find new lowest in the tree
-            if(lowers.expanded());
-            
+            if(current == null){
+                current = root;
+            }
+            //find the lowest node
+            if(current.expanded()){
+                //explore its children always
+                current = current.child;
+            } else {
+                //not expanded yet and we must consider the node against the low
+                if(lowest == null){
+                    lowest = current;
+                } else if(current.hueristic() < lowest.hueristic()){
+                    lowest = current;
+                }
+                
+                //we know we do not have any children to explore
+                //check to explore siblings
+                if(current.rightSib != null){
+                    //explore that sibling
+                    current = current.rightSib;
+                } else {
+                    //no siblings so we must go upwards
+                    if(current.parent != null){
+                        current = current.parent;
+                        //loop until we find a parent with a sibling
+                        while(current.parent != null && current.rightSib == null){
+                            current = current.parent;
+                        }
+                        
+                        if(current.parent == null){
+                            //we hit the root and must expand the lowest if it
+                            //isn't the goal
+                            if(lowest.city.name.equals(end)){
+                                tracePath(lowest);
+                                return;
+                            }
+                            
+                            lowest.expand(map);
+                            lowest = null;
+                        } else {
+                            //we did not hit the root and instead found a new 
+                            //sibling to explore
+                            current = current.rightSib;
+                        }
+                    } else {
+                        //we hit the root and must expand the lowest if it
+                        //isn't the goal
+                        if(lowest.city.name.equals(end)){
+                            tracePath(lowest);
+                            return;
+                        }
+
+                        lowest.expand(map);
+                        lowest = null;
+                        
+                    }
+                }
+            }
         }
+    }
+    
+    public void tracePath(ASTNode n){
+        System.out.println("SOLUTION FOUND");
     }
 
 }
@@ -160,10 +248,9 @@ class ASTNode{
     }
     
     public void expand(Map m){
+        System.out.println("EXPANDING" + this.toString());
         //we cannot expand a node if its child is null
-        if(child != null){
-            throw new IllegalArgumentException();
-        }
+
         
         ASTNode nul = null;
         ASTNode left = null;
@@ -171,12 +258,20 @@ class ASTNode{
         //at this point we can create the children based on the edges of the nodes
         for(int i = 0; i < city.getEdges().length; i++){
             //grab the node associated with the edge name
-            Node n = (Node) m.get(city.getEdges()[i].to);
-            
+            Node node= (Node) m.get(city.getEdges()[i].to);
             //create a new ASTNode based on this node as the parent, the right nodes
             //null, the left is the left node and the g(n) will be this gcost plus
             //the cost to traverse the edge
-            curr = new ASTNode(this, nul, left,n,this.gcost + city.getEdges()[i].distance);
+            if(node == null){
+                //information dump
+                System.out.println(i);
+                System.out.println(city.getEdges()[i].to);
+                System.out.println(m.get(city.getEdges()[i].to));
+                System.out.println(Arrays.toString(city.edges));
+                System.out.println("STOP");
+                System.exit(0);
+            }
+            curr = new ASTNode(this, nul, left,node,this.gcost + city.getEdges()[i].distance);
             
             //if the left node is not null the make its right sibling the current 
             //node
@@ -196,6 +291,8 @@ class ASTNode{
     }
     
     public double hueristic(){
+        System.out.println(city);
+        System.out.println(gcost);
         return gcost + city.distance;
     }
     
@@ -204,6 +301,7 @@ class ASTNode{
     }
     
     //prints out the node and its children
+    @Override
     public String toString(){
         return city.name;
     }
@@ -262,6 +360,6 @@ class Edge{
     }
     
     public String toString(){
-        return to;
+        return to + " " + distance + " " + roadcon + " " + danger;
     }
 }
