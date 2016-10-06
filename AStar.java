@@ -17,48 +17,17 @@ public class AStar{
         //at this point the map is assembled we can start doing our
         //stuff
         
-        //String start = getStart(map);
-
+        String start = getStart(map);
+        //String start = "Blue_Mountains";
         //at this point our map is setup and our start point is created WOO
-        //ASTNode nul = null;
+        ASTNode nul = null;
         //create the root node
-        //ASTNode root = new ASTNode(nul, nul, nul, map.get(start), 0.0);
-        //AStarTree tree = new AStarTree(root, map);
-        ASTNode root = null;
-        //System.out.println(tree.root.printChildren());
-        //System.out.println(Arrays.toString(root.city.getEdges()));
-        //System.out.println(map.get("Carrock"));
-        //lets go through each node in the map make it into the tree and then
-        //attempt to expand it
-        
-        //System.out.println(map.get((map.get("Wood_Elves").edges[2].to)));
-        System.out.println(map);
-        
-        /*
-        for(String name : map.keySet()){
-            System.out.println(name + " "  + map.get(name));
-            Edge[] e = map.get(name).edges;
-            for(int i = 0; i <e.length; i ++){
-                if(map.get(e[i].to) ==  null){
-                    System.out.print("|||");
-                    System.out.print("ERROR A NULL WAS FOUND");
-                    System.out.print(e[i]);
-                }
-                
-            }
-            System.out.println();
-            System.out.println();
-            System.out.println();
-        }
-        */
-        System.out.println(map.get("Carrock"));
-        System.out.println(map.get("Bree"));
-        System.out.println(map.get("North_Pass"));
-         for(String name : map.keySet()){
-            String r = name.replaceAll(" " , "");
-            System.out.println(name + " " + map.get(r));
-        }
-        //tree.run();
+        ASTNode root = new ASTNode(nul, nul, nul, map.get(start), 0.0);
+        AStarTree tree = new AStarTree(root, map);
+
+        //System.out.println(map);
+
+        tree.run();
     }
     
     
@@ -96,7 +65,7 @@ public class AStar{
 
             Node nod = new Node(name, distance, edges);
             map.put(name, nod);
-            System.out.println(name + " " + nod);
+            //System.out.println(name + " " + nod);
             sc.nextLine();
         }
         return map;
@@ -181,6 +150,8 @@ class AStarTree{
                             //we hit the root and must expand the lowest if it
                             //isn't the goal
                             if(lowest.city.name.equals(end)){
+                                System.out.println("PRINTING PATH");
+                                System.out.println(lowest.gcost);
                                 tracePath(lowest);
                                 return;
                             }
@@ -196,6 +167,8 @@ class AStarTree{
                         //we hit the root and must expand the lowest if it
                         //isn't the goal
                         if(lowest.city.name.equals(end)){
+                            System.out.println("PRINTING PATH");
+                            System.out.println(lowest.gcost);
                             tracePath(lowest);
                             return;
                         }
@@ -210,7 +183,15 @@ class AStarTree{
     }
     
     public void tracePath(ASTNode n){
-        System.out.println("SOLUTION FOUND");
+        //print out this node but not before printing out its parent
+        if(n == root){
+            System.out.println(n);
+        } else {
+            tracePath(n.parent);
+            System.out.println(n);
+        }
+            
+        
     }
 
 }
@@ -248,7 +229,7 @@ class ASTNode{
     }
     
     public void expand(Map m){
-        System.out.println("EXPANDING" + this.toString());
+        //System.out.println("EXPANDING" + this.toString());
         //we cannot expand a node if its child is null
 
         
@@ -291,8 +272,8 @@ class ASTNode{
     }
     
     public double hueristic(){
-        System.out.println(city);
-        System.out.println(gcost);
+        //System.out.println(city);
+        //System.out.println(gcost);
         return gcost + city.distance;
     }
     
