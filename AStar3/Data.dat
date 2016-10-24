@@ -92,8 +92,8 @@ Rivendell
 580
 7
 North_Pass 100 2 65
-Caradhras 60 25 65
-Moria 180 15 9
+Caradhras 60 25 69
+Moria 180 15 90
 Isengard 500 12 85
 Fornost 375 14 58
 Sarn_Ford 400 15 55
@@ -102,99 +102,100 @@ Weathertop 230 50 45
 Caradhras
 550
 4
-Carrock 70 0 7
-Gladden_Fields 150 12 6
+Carrock 70 0 78
+Gladden_Fields 150 12 65
 Lothlorien 300 32 55
-Rivendell 60 25 65
+Rivendell 60 25 69
 
 North_Pass
 500
 2
-Carrock 80 0 7
+Carrock 80 0 75
 Rivendell 100 2 65
 
 Carrock
 450
 6
-Wood_Elves 175 12 8
-Erebor 250 18 8
-Esgaroth 240 24 8
+Wood_Elves 175 12 64
+Erebor 250 18 75
+Esgaroth 240 24 75
 Dol_Guldur 300 0 85
-Caradhras 70 0 7
-North_Pass 80 0 7
+Caradhras 70 0 78
+North_Pass 80 0 75
 
 Gladden_Fields
 500
 5
-Esgaroth 400 0 6
-Dol_Guldur 175 2 8
-Lothlorien 190 18 7
-Caradhras 150 12 6
-Moria 140 16 95
+Esgaroth 400 0 63
+Dol_Guldur 175 2 82
+Lothlorien 190 18 62
+Caradhras 150 12 65
+Moria 140 16 85
 
 Lothlorien
 660
 5
 Dol_Guldur 180 0 85
-Isengard 240 28 8
+Isengard 240 28 80
 Caradhras 300 32 55
-Gladden_Fields 190 18 7
-Moria 20 21 95
+Gladden_Fields 190 18 62
+Moria 20 21 72
 
 Isengard
 890
 4
 Sarn_Ford 500 0 72
 Rivendell 500 12 85
-Lothlorien 240 28 8
-Dol_Guldur 390 0 85
+Lothlorien 240 28 80
+Dol_Guldur 390 0 83
 
 Moria
 620
 3
-Gladden_Fields 140 16 95
-Lothlorien 20 21 95
-Rivendell 180 15 9
+Gladden_Fields 140 16 85
+Lothlorien 20 21 72
+Rivendell 180 15 90
 
 Dol_Guldur
 500
 4
-Isengard 390 0 85
+Isengard 390 0 83
 Carrock 300 0 85
-Gladden_Fields 175 2 8
+Gladden_Fields 175 2 82
 Lothlorien 180 0 85
 
 Wood_Elves
 275
 3
-Dale 90 84 2
-Erebor 100 90 3
-Carrock 175 12 8
+Dale 90 84 31
+Erebor 100 90 31
+Carrock 175 12 64
 
 Esgaroth
 175
 5
-Dale 40 95 15
-Erebor 50 98 15
-Iron_Hills 175 82 3
-Carrock 240 24 8
-Gladden_Fields 400 0 6
+Dale 40 95 10
+Erebor 50 98 8
+Iron_Hills 175 82 38
+Carrock 240 24 75
+Gladden_Fields 400 0 63
 
 Erebor
 200
 5
-Iron_Hills 175 82 3
-Carrock 250 18 8
-Wood_Elves 175 12 8
-Esgaroth 50 98 15
-Dale 10 99 1
+Iron_Hills 200 91 35
+Carrock 250 18 75
+Wood_Elves 175 12 31
+Esgaroth 50 98 8
+Dale 10 99 5
 
 Dale
 180
-3
-Erebor 10 99 1
-Iron_Hills 200 91 3
-Esgaroth 40 95 15
+4
+Erebor 10 99 5
+Iron_Hills 200 87 35
+Esgaroth 40 95 10
+Wood_Elves 90 84 31
 
 Iron_Hills
 0
